@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
 
 	// accept()함수, 나한테 걸려온 전화가 있는지 운영체제에게 확인하는 과정. 연결이 올때까지 계속 기다리다가 전화가 오면 그때 반환함.
 	clnt_addr_size = sizeof(clnt_addr);
-	clnt_sock = accept(serv_addr, (struct sockaddr*) &clnt_addr, &clnt_addr_size);
+	clnt_sock = accept(serv_sock, (struct sockaddr*) &clnt_addr, &clnt_addr_size);
 	if (clnt_sock == -1)
 		error_handling("accept() error");
 
@@ -60,7 +60,7 @@ int main(int argc, char * argv[])
 	close(clnt_sock);		//	운영체제에게 사용종료를 알림.
 	close(serv_sock);		//	서버와 클라이언트 소켓을 종료시킴.
 
-	return 0
+	return 0;
 
 }
 
