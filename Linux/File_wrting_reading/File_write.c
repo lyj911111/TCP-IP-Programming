@@ -14,6 +14,11 @@
 */
 
 #include <unistd.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+
+void error_handling(char * message);
 
 int main(void)
 {
@@ -34,4 +39,11 @@ int main(void)
 	close(fd);
 
 	return 0;
+}
+
+void error_handling(char * message)
+{
+	fputs(message, stderr);
+	fputc('\n', stderr);
+	exit(1);
 }
