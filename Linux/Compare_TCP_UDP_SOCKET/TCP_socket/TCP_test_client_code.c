@@ -63,6 +63,7 @@ int main(int argc, char * argv[])
 	}
 
 	printf("Message from server : %s \n", message);
+	printf("Function read() call count : %d\n", str_len);
 	close(sock);
 	return 0;
 
