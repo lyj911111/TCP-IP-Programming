@@ -52,13 +52,14 @@ int main(int argc, char * argv[])
 
 	/*
 		Server에서 write 함수를, client가 read하여 buffer를 읽고,
-		그 byte index의 길이를 하나씩 읽어보는 보기. 다 읽고 NULL을 만나면 while 종료.
+		그 byte index의 길이를 하나씩 읽어보는 보기. 다 읽고 데이터가 없어서 NULL을 만나면 while 종료.
 	*/
 	while( read_len = read(sock, &message[idx++]), 1 )
 	{
-		str_len = read(sock, message, sizeof(message)-1);
-		if (str_len == -1)
+		if ( read_len == -1)
 			error_handling("read() error");
+		
+		str_len = read_len++;
 	}
 
 	printf("Message from server : %s \n", message);
