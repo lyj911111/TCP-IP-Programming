@@ -10,6 +10,7 @@
 
 	본인 CPU가 big endian일 경우, 그데로 출력.
 	little endian일 경우 순서가 바껴서 출력.
+	대부분의 Intel, AMD 계열 CPU는 little Endian으로 뒤바껴서 출력될 확률이 높음.
 */
 
 #include <stdio.h>
