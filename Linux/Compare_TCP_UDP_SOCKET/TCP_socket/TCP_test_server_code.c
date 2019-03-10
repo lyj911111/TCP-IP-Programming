@@ -44,6 +44,13 @@ int main(int argc, char * argv[])
 	if (serv_sock == -1)
 		error_handling("socket() error");
 
+	/*
+		임터넷 주소의 초기화과정.
+		1. memset()				: &serv_addr 구조체 내부를 모두 0으로 초기화과정
+		2. serv_addr.sin_family	: 사용할 타입, IPv4 으로 지정.
+		3. serv_addr.sin_addr.s_addr	: INADDR_ANY <= 컴퓨터 서버의 주소값을 찾아서 스스로 할당함. (서버만 해당)
+		4. serv_addr.sin_port			: 문자열 포트를 atoi 함수로 int로 만들어서 htons 으로 빅엔디안 형태로 보냄.
+	*/
 	memset(&serv_addr, 0, sizeof(serv_addr));			//	서버의 주소를 저장하는 곳에 깨끗하게 0으로 clear하는 작업
 	serv_addr.sin_family = AF_INET;						//	주소, IP 등을 초기화
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -51,7 +58,10 @@ int main(int argc, char * argv[])
 
 	
 	/*
-		위에서 선언한 serv_addr 의 구조체:						sockaddr 의 구조체:
+		bind(Descripter, IP와 Port의 주소값정보, 2번째 인자의 크기 sizeof)
+		=> 성공시 0반환, 실패시 -1반환
+		
+		맨 위에서 선언한 serv_addr 의 구조체:						sockaddr 의 구조체:
 		
 		struct sockaddr_in serv_addr						struct sockaddr 
 		{													{

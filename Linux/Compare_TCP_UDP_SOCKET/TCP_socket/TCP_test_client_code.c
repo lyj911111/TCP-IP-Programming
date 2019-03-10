@@ -40,10 +40,16 @@ int main(int argc, char * argv[])
 	if (sock == -1)
 		error_handling("socket() error");
 
-	// 연결시킬 상대방의 주소를 초기화 함.
-	memset(&serv_addr, SOCK_STREAM, 0);
+	/*
+		임터넷 주소의 초기화과정.
+		1. memset()				: &serv_addr 구조체 내부를 모두 0으로 초기화과정
+		2. serv_addr.sin_family	: 사용할 타입, IPv4 으로 지정.
+		3. serv_addr.sin_addr.s_addr	: 문자열 형태의 IP주소를 전달, (파싱 1번 인자)
+		4. serv_addr.sin_port			: 문자열 포트를 atoi 함수로 int로 만들어서 htons 으로 빅엔디안 형태로 보냄.
+	*/
+	memset(&serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
-	serv_addr.sin_addr.s_addr = inet_addr(argv[1]);
+	serv_addr.sin_addr.s_addr = inet_addr(argv[1]);		// 127.0.0.1 <=주소값 Loop Back 방식으로 본인 컴퓨터에서만 사용. (테스트할때 쓰는 IP) 
 	serv_addr.sin_port = htons(atoi(argv[2]));
 
 	// connect(), &serv_addr에 저장된 주소에 연결하라
