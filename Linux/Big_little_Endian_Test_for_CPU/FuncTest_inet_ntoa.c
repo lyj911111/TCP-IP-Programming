@@ -28,11 +28,11 @@ int main(int argc, char * argv[])
 	addr1.sin_addr.s_addr = htonl(0x01020304);
 	addr2.sin_addr.s_addr = htonl(0x01010101);
 	
-	str_ptr = inet_ntoa(addr1, sin_addr);					// 선언한 포인터변수에 문자열 형태 IP주소를 저장
+	str_ptr = inet_ntoa(addr1.sin_addr);					// 선언한 포인터변수에 문자열 형태 IP주소를 저장
 	strcpy(str_arr, str_ptr);								// 출력된 IP주소 string을 str_arr에 복사
 	printf("Dotted-Decimal notation 1: %s \n", str_ptr);
 	
-	inet_ntoa(addr2, sin_addr);
+	inet_ntoa(addr2.sin_addr);
 	printf("Dotted-Decimal notation 2: %s \n", str_ptr);
 	printf("Dotted-Decimal notation 3: %s \n", str_arr);
 	
