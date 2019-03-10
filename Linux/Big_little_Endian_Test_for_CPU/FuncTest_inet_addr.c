@@ -17,15 +17,17 @@ int main(int argc, char * argv[])
 	char * addr1 = "12.34.56.255";	// 1 byte의 최대 크기는 0~255
 	char * addr2 = "12.34.56.256";	// 범위를 벗어났으므로 오류 발생해야 함.
 	
+	printf(" Print out addr1 \n");
 	unsigned long conv_addr = inet_addr(addr1);
 	if (conv_addr == INADDR_NONE)
-		printf("Error ocrrured");
+		printf("Error ocrrured \n");
 	else
 		printf("Network ordered integer addr : %#lx \n", conv_addr);
 	
+	printf("print out addr2 \n");
 	conv_addr = inet_addr(addr2);
 	if (conv_addr == INADDR_NONE)
-		printf("Error ocrrured");
+		printf("Error ocrrured \n");
 	else
 		printf("Network ordered integer addr : %#lx \n", conv_addr);
 	
