@@ -49,7 +49,20 @@ int main(int argc, char * argv[])
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serv_addr.sin_port = htons(atoi(argv[1]));
 
-	// bind함수를 호출, serv_sock에 할당된 숫자에, &serv_addr 주소정보를 할당하라
+	
+	/*
+		위에서 선언한 serv_addr 의 구조체:						sockaddr 의 구조체:
+		
+		struct sockaddr_in serv_addr						struct sockaddr 
+		{													{
+			sa_family_t		sin_family;		- n byte	=>		sa_family_t		sin_family;	 - n byte
+			uint16_t		sin_port;		- 2 byte +	=>		char			sa_data[14]; - 14 byte
+			struct in_addr	sin_addr;		- 4 byte +
+			char			sin_zero[8];	- 8 byte +
+		}													}
+			이렇게, 크기를 구조체의 크기를 맞춰서 casting 하기 위해 아래와 같이 zero[8] 처럼 0으로 채운 인자가 필요.
+			(2+4+8 = 14 byte)      ↓ bind() 2번? 인자가 casting함.
+	*/
 	if (bind(serv_sock, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) == -1)
 		error_handling("bind() error");
 
