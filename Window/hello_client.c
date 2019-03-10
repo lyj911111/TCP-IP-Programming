@@ -1,3 +1,9 @@
+/*
+	최신 비주얼 스튜디오(2018) 오류방지 설정
+	프로젝트 -> 속성 -> 구성 속성 -> C/C++ -> 일반 -> SDL검사 (아니오)
+	
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <winsock2.h>
