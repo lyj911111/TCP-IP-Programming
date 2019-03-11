@@ -1,7 +1,13 @@
 /*
 
-	연결을 요청하는 소켓.
+	연결을 요청하는 소켓. (문제의 소지가 있는 코드)
+	* 데이터 전송완료 확인 없는 코드
 	과정 : socket() -> connect() 
+	
+	서버와 1:1 이나, 자원이 넘치는 경우는 괜찮지만,
+	TCP는 데이터경계가 존재하지 않아, 전송데이터가 커지면 OS가 자동으로 데이터를 잘라서 전송.
+	그러면 client는 데이터가 다 전송되지 않았음에도 불구하고 write를 실행 할 수도 있다.
+	그래서 client는 데이터가 다 왔는지 확인하고, 그렇지 않으면 다시 read를 수행해야 한다.
 
 */
 
@@ -35,7 +41,7 @@ int main(int argc, char * argv[])
 		error_handling("socket() error");
 
 	// 연결시킬 서버의 주소를 초기화 함. 주소 1번 파씽, 포트 2번 파씽
-	memset(&serv_addr, SOCK_STREAM, 0);
+	memset(&serv_addr, 0, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = inet_addr(argv[1]);
 	serv_addr.sin_port = htons(atoi(argv[2]));
