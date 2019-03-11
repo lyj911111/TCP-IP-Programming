@@ -61,15 +61,21 @@ int main(int argc, char * argv[])
 		if (!strcmp(message, "q\n") || !strcmp(message, "Q\n"))		// 대소문자 q가 눌릴 경우 종료
 			break;
 
+		/*
+			1 param : sock의 descripter(handler)
+			2 param : Buffer의 주소값
+			3 param : 보낸 총 buffer 크기
+			4 return : 전송한 buffer 길이 
+		*/
 		str_len = write(sock, message, strlen(message));			//	message를 작성해서 총 메세지 buffer의 길이 정보 반환
 
 		recv_len = 0;
-		while (recv_len < str_len)  // 몇개 보내졌는지 셈 길이 < 내가 보낸 메세지길이, 내가 보낸 길이가 될때까지 read를 반복
+		while (recv_len < str_len)  // (몇개 보내졌는지 셈 길이 < 내가 보낸 메세지길이), 내가 보낸 길이가 될 때까지 byte 읽기를 반복
 		{
-			recv_cnt = read(sock, &message[recv_len], BUF_SIZE - 1);	// 서버로 부터 받은 데이터를 읽어서 recv_cnt 에 저장.
+			recv_cnt = read(sock, &message[recv_len], BUF_SIZE - 1);	// sock descripter 전달 // &message[0] -> &message[1] -> &message[2] ... 이렇게 1개의 byte씩 읽어서 1을 리턴 // 한번에 최대 1023개까지 읽음.
 			if (recv_cnt == -1)
 				error_handling("read() Error!");
-			recv_len += recv_cnt;							//	
+			recv_len += recv_cnt;							//	1byte를 리턴한 것을 recv_len 에 계속 더하여 몇개 보내졌는지 갯수를 셈.
 			
 		}
 		message[str_len] = NULL;							//	버퍼의 끝에 NULL을 넣어 String끝을 알림
