@@ -3,7 +3,7 @@
 	socket() -> bind() -> listen() -> accept() -> write() or read() -> close(client) -> close(server)
 	                                 ↑                                                ↓
 	                                 -<-------------------------<-------------------<--(while)
-	5번만 서비스를 제공하는 서버코드 작성.
+	5명의 client에게 서비스를 제공하는 서버코드 작성.
 */
 
 #include <stdio.h>
