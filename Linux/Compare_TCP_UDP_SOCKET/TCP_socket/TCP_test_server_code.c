@@ -86,7 +86,15 @@ int main(int argc, char * argv[])
 	if (clnt_sock == -1)
 		error_handling("accept() error");
 
-	// write()함수를 이용해서 데이터를 쓸 수 있음.
+	/*
+		ssize_t  write(파일 Descripter, 전송할 데이터를 저장할 버퍼의 주소값, 전송할 바이트 크기);
+		
+		1번째 param : - 소켓의 Descripter(Handler) 번호를 인자로 넣음
+		2번째 param : - 보낼 buffer의 주소값을 전달.
+		3번째 param : - 한번 당 보낼 데이터 크기
+		return값   : - 정상적으로 수행 되었을 때 보낸 byte 수를 리턴.
+		
+	*/
 	write(clnt_sock, message, sizeof(message));
 	close(clnt_sock);		//	운영체제에게 사용종료를 알림.
 	close(serv_sock);		//	서버와 클라이언트 소켓을 종료시킴.

@@ -59,13 +59,21 @@ int main(int argc, char * argv[])
 	/*
 		Server에서 write 함수를, client가 read하여 buffer를 읽고,
 		그 byte index의 길이를 하나씩 읽어보는 보기. 다 읽고 데이터가 없어서 NULL을 만나면 while 종료.
+		
+		ssize_t  read(파일 Descripter, 수신할 데이터를 저장할 버퍼의 주소값, 수신할 최대 바이트 크기);
+		
+		1번째 param : - 소켓의 Descripter(Handler) 번호를 인자로 넣음
+		2번째 param : - 수신한 buffer의 주소값을 전달.
+		3번째 param : - 받을 데이터 크기
+		return값   : - 정상적으로 수행 되었을 때 읽은 byte 수를 리턴.
+		
 	*/
-	while( read_len = read(sock, &message[idx++], 1 ))
+	while( read_len = read(sock, &message[idx++], 1 ))	//	수신할 byte크기 1, &message[0] -> &message[1] -> &message[2] ... 이런식으로 버퍼의 내부를 확인하며 NULL 나오면 while문 빠져나감.
 	{
 		if ( read_len == -1)
 			error_handling("read() error");
 		
-		str_len += read_len;
+		str_len += read_len;	// 1 byte씩 읽은 값을 더해서 str_len 에 계속 저장. 즉, str_len은 읽은 바이트의 갯수를 최종 저장.
 	}
 
 	printf("Message from server : %s \n", message);
