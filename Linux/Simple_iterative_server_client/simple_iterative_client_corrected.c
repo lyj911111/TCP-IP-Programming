@@ -70,13 +70,11 @@ int main(int argc, char * argv[])
 			if (recv_cnt == -1)
 				error_handling("read() Error!");
 			recv_len += recv_cnt;
-
+			
+			message[str_len] = NULL;						//	버퍼의 끝에 NULL을 넣어 String끝을 알림
+			printf("Message from server : %s \n", message);
 		}
 
-		
-		str_len = read(sock, message, BUF_SIZE - 1);	//	소켓을 받아 읽음.
-		message[str_len] = NULL;						//	버퍼의 끝에 NULL을 넣어 String끝을 알림
-		printf("Message from server : %s \n", message);
 	}
 	close(sock);
 	return 0;
