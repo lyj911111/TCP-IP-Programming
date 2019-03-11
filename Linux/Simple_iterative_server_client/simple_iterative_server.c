@@ -1,8 +1,8 @@
 /*
 	반복 서버코딩 방법.
 	socket() -> bind() -> listen() -> accept() -> write() or read() -> close(client) -> close(server)
-									↑                                                ↓
-									-<-------------------------<-------------------<--(while)
+	                                 ↑                                                ↓
+	                                 -<-------------------------<-------------------<--(while)
 	5번만 서비스를 제공하는 서버코드 작성.
 */
 
@@ -40,10 +40,10 @@ int main(int argc, char * argv[])
 	if (serv_sock == -1)
 		error_handling("socket() error");
 
-	memset(&serv_addr, 0, sizeof(serv_addr));			//	서버의 주소를 저장하는 곳에 깨끗하게 0으로 clear하는 작업
-	serv_addr.sin_family = AF_INET;						//	type결정
-	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);		//	PC host 주소를 가져와서 Big Endian으로 변형(네트워크 표준 순서)
-	serv_addr.sin_port = htons(atoi(argv[1]));			//	파씽 인자 포트번호 문자열을 int로 바꾸고 Big Endian으로 변형
+	memset(&serv_addr, 0, sizeof(serv_addr));           //	서버의 주소를 저장하는 곳에 깨끗하게 0으로 clear하는 작업
+	serv_addr.sin_family = AF_INET;                     //	type결정
+	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);      //	PC host 주소를 가져와서 Big Endian으로 변형(네트워크 표준 순서)
+	serv_addr.sin_port = htons(atoi(argv[1]));          //	파씽 인자 포트번호 문자열을 int로 바꾸고 Big Endian으로 변형
 
 	// bind(서버소켓 hander, 위에 선언 family,IP,Port정보,  구조체 크기) 
 	if (bind(serv_sock, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) == -1)
