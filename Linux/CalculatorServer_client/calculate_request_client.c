@@ -60,7 +60,7 @@ int main(int argc, char * argv[])
 
 	for (i = 0; i < opnd_cnt; i++)
 	{
-		printf("Operand %d", i + 1);
+		printf("Operand %d : ", i + 1);
 		scanf("%d", (int*)&opmsg[i * OPSZ + 1]);
 	}
 
