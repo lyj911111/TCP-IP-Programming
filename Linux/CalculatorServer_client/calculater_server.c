@@ -18,8 +18,8 @@
 		[2][ , , , ][ , , , ][-]
 
 	tip.
-		하나의 배열에 다양한 자료형을 저장하려면, 배열을 반드시 char으로 선언해야 한다. (위의 4byte는 (int*)로 캐스팅하여 전달함)
-		
+		서버에는 위와 같은 버퍼가 다 찬 배열이 client으로 부터 날라옴.
+		이를 배열을 벗겨내며 연산을 해서 결과값을 다시 client에게 write함.
 
 	Server 코드
 
@@ -32,16 +32,16 @@
 #include<arpa/inet.h>
 #include<sys/socket.h>
 
-#define BUF_SIZE 1024
-#define OPSZ 4
+#define BUF_SIZE 1024		//	송수신할 버퍼의 사이즈
+#define OPSZ 4				//	피연산자 사이즈를 4byte로 정함.
 
 void error_handling(char * message);
-int calculate(int opnum, int opnds[], char operator);
+int calculate(int opnum, int opnds[], char operator);		// 계산을 수행할 함수.
 
 int main(int argc, char * argv[])
 {
 	int serv_sock, clnt_sock;
-	char opinfo[BUF_SIZE];
+	char opinfo[BUF_SIZE];						// 데이터 송수신을 위한 버퍼사이즈 배열
 	int result, opnd_cnt, i;
 	int recv_cnt, recv_len;
 	struct sockaddr_in serv_adr, clnt_adr;
@@ -68,20 +68,21 @@ int main(int argc, char * argv[])
 	if (listen(serv_sock, 5) == -1)
 		error_handling("listen() error");
 
-	clnt_adr_sz = sizeof(clnt_adr);
+	clnt_adr_sz = sizeof(clnt_adr);		// client 소켓 사이즈
 
+	// 5명의 client로 제한
 	for (i = 0; i < 5; i++)
 	{
 		opnd_cnt = 0;
-		clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
-		read(clnt_sock, &opnd_cnt, 1);
+		clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);	// 서버소켓과 클라이언트 소켓 연결
+		read(clnt_sock, &opnd_cnt, 1);												// 클라이언트로 맨처음 1byte(피연산자 갯수)를 읽음 (몇개의 피연산자가 들어왔는지 파씽된 데이터) for문을 위해?
 
-		recv_len = 0;
-		while ((opnd_cnt * OPSZ + 1) > recv_len)
-		{
-			recv_cnt = read(clnt_sock, &opinfo[recv_len], BUF_SIZE - 1);
-			recv_len += recv_cnt;
-		}
+		recv_len = 0;																// ex) 파씽 데이터가 3일때 예시             (13)
+		while ((opnd_cnt * OPSZ + 1) > recv_len)									// 파씽된 피연산자 갯수만큼 횟수를 돌게함. ex) (3x4+1) > recv_len
+		{																			//                                                                 
+			recv_cnt = read(clnt_sock, &opinfo[recv_len], BUF_SIZE - 1);			// opnd_cnt가 3일때 예시, 배열값: &opinfo[1] &opinfo[5] &opinfo[9]  => [3][ , ,3, ][ , ,3, ][ , ,3, ][+]
+			recv_len += recv_cnt;													// recv_cnt 0 4 4 4 
+		}																			// recv_len 1 4 8 12
 		result = calculate(opnd_cnt, (int*)opinfo, opinfo[recv_len - 1]);
 		write(clnt_sock, (char*)&result, sizeof(result));
 		close(serv_sock);
@@ -91,6 +92,12 @@ int main(int argc, char * argv[])
 	return 0;
 }
 
+/*
+	계산 수행 함수.
+	1st param: 몇개의 피연산자가 있는지 대입. (몇개의 인자를 넣을지 결정)
+	2nd param: 4 byte씩 읽는 피연산자(위 예시에서 3개)를 인자로 넣음.
+	3rd param: char 형 1byte 연산자(+,-,*)
+*/
 int calculate(int opnum, int opnds[], char op)
 {
 	int result = opnds[0], i;
@@ -98,14 +105,15 @@ int calculate(int opnum, int opnds[], char op)
 	{
 	case '+':
 		for (i = 1; i < opnum; i++)
-			result += opnds[i];
+			result += opnds[i];			//	
+		break;
 	case '-':
 		for (i = 1; i < opnum; i++)
 			result -= opnds[i];
+		break;
 	case '*':
 		for (i = 1; i < opnum; i++)
 			result *= opnds[i];
-
 		break;
 	}
 
