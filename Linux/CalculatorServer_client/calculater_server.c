@@ -41,6 +41,10 @@ int main(int argc, char * argv[])
 		exit(1);
 	}
 
+	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
+	if (serv_sock == -1)
+		error_handling("socket() error!");
+
 	memset(&serv_adr, 0, sizeof(serv_adr));
 	serv_adr.sin_family = AF_INET;
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
