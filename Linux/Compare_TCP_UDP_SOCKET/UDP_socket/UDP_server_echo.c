@@ -41,7 +41,7 @@ int main(int argc, char * argv[])
 	serv_adr.sin_port = htons(atoi(argv[1]));
 
 	// IP주소와 Port를 할당받기 위해 외부와 통신을 위해
-	if (bind(serv_adr, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
+	if (bind(serv_sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
 		error_handling("bind() error");
 
 	while (1)
@@ -59,7 +59,7 @@ int main(int argc, char * argv[])
 			5 param : 발신자의 정보를 넣을 sockaddr 구조체변수 주소값 전달
 			6 param : 5번인자 매개변수의, 주소의 구조체변수 크기 정보를 담고있는 변수의 주소값전달 (sizeof)
 		*/
-		str_len = recvfrom(serv_sock, message, BUF_SIZE, 0, (struct sockaddr*)&clnt_adr, clnt_adr_sz);
+		str_len = recvfrom(serv_sock, message, BUF_SIZE, 0, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
 		// server소켓으로 메세지를 보냄.
 		/*
 			ssize_t  sendto(int  sock, void  *buff,  size_t  nbytes,  int flags, struct sockaddr  *to,  socklen_t  addrlen);

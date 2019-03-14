@@ -37,7 +37,7 @@ int main(int argc, char * argv[])
 
 	memset(&serv_adr, 0, sizeof(serv_adr));
 	serv_adr.sin_family = AF_INET;
-	serv_adr.sin_addr.s_addr = htonl(argv[1]);
+	serv_adr.sin_addr.s_addr = inet_addr(argv[1]);
 	serv_adr.sin_port = htons(atoi(argv[2]));
 
 	while (1)
@@ -72,7 +72,7 @@ int main(int argc, char * argv[])
 			5 param : 발신자의 정보를 넣을 sockaddr 구조체변수 주소값 전달
 			6 param : 5번인자 매개변수의, 주소의 구조체변수 크기 정보를 담고있는 변수의 주소값전달 (sizeof)
 		*/
-		str_len = recvfrom(sock, message, BUF_SIZE, 0, (struct sockaddr*)&from_adr, adr_sz);
+		str_len = recvfrom(sock, message, BUF_SIZE, 0, (struct sockaddr*)&from_adr, &adr_sz);
 		message[str_len] = 0;
 		printf("Message from the server : %s", message);
 		
