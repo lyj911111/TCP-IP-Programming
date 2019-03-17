@@ -28,7 +28,7 @@ int main(int argc, char * argv[])
 	}
 	
 	if (pid == 0)
-		printf("End Child process");				// 3. 자식 프로세스 종료, 값 리턴
+		printf("End Child process");				// 3. 자식 프로세스 종료, 값 리턴 => 부모가 종료되지 않았으므로, 좀비가 되어버림.
 	else
 		printf("End parent process");				// 4. 30초 멈춤이 끝나고 종료하여 리턴, 이때 좀비가 된 자식도 데려감.
 	
