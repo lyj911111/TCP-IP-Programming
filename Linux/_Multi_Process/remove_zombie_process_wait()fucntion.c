@@ -10,6 +10,14 @@
 	명령어 - ps au
 	(에서 +z 모양의 좀비를 찾으면됨).
 	
+	* wait() 함수는 좀비프로세스를 소멸시키는 방법이지만, 호출시점에서 종료된 자식프로세스가 없으면
+	  임의 자식 프로세스가 종료될때까지 blocking 상태에 놓여 영원히 종료 불가할 수 도 있다.
+	
+	
+	pid_t  wait(int *  statloc);
+	
+	성공 -> 종료된 자식 PID반환, 실패시 -1
+	
 */
 
 #include<stdio.h>
@@ -42,6 +50,7 @@ int main(int argc, char * argv[])
 			wait(&status);
 			if(WIFEXITED(status))
 				printf("Child send one : %d \n", WEXITSTATUS(status));
+			sleep(30);														// $ ps au 명령어로 자식프로세스 상태를 확인용.
 		}
 	}
 	
