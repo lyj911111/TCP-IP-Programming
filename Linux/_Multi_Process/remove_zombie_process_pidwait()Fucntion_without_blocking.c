@@ -42,7 +42,7 @@ int main(int argc, char * argv[])
 			puts("sleep 3 sec");
 		}
 		
-		if (WNOHANG(status))
+		if (WIFEXITED(status))
 			printf("Child send %d \n", WEXITSTATUS(status));
 	}
 
