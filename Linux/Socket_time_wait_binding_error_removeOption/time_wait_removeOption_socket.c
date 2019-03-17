@@ -71,7 +71,7 @@ int main(int argc, char * argv[])
 	
 	clnt_addr_size = sizeof(clnt_addr);
 	
-	for(i = 0; i < 5; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		// 클라이언트에서 connect를 하면, accept(), 클라이언트 소켓 hander 할당
 		clnt_sock = accept(serv_sock, (struct sockaddr*) &clnt_addr, &clnt_addr_size);
@@ -81,7 +81,7 @@ int main(int argc, char * argv[])
 			printf("Connected with Client %d \n", i+1);
 		
 		// read(클라리언트소켓 hander, 메세지, 메세지크기) 문자열로 크기로 리턴
-		while( (str_len = read(clnt_sock, message, BUF_SIZE)) != 0 )
+		while( (str_len = read(clnt_sock, message, sizeof(message))) != 0 )
 			write(clnt_sock, message, str_len);			//	읽은 메세지를 다시 클라이언트로 씀. (에코)
 	
 	}
