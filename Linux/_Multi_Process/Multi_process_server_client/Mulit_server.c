@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 	/* 좀비 프로세스를 막기 위한 과정. */
 	act.sa_handler = read_childproc;
 	sigemptyset(&act.sa_mask);
-	act.sa_flag = 0;
+	act.sa_flags = 0;
 	state = sigaction(SIGCHLD, &act, 0);
 
 
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 	memset(&serv_adr, 0, sizeof(serv_adr));				// 초기화 과정
 	serv_adr.sin_family = AF_INET;
 	serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
-	serv_adr.port = htons(atoi(argv[1]));
+	serv_adr.sin_port = htons(atoi(argv[1]));
 
 	// 부모 프로세스의 bind(), listen() 함수 호출.
 	if (bind(serv_sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) == -1)
@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
 		if (pid == 0)
 		{
 			close(serv_sock);		// listen소켓을 닫음 (불필요한 소켓을 닫음.)
-			while ((ste_len = read(clnt_sock, buf, BUF_SIZE)) != 0)		// read & write 에코 함수
+			while ((str_len = read(clnt_sock, buf, BUF_SIZE)) != 0)		// read & write 에코 함수
 				write(clnt_sock, buf, str_len);
 
 			close(clnt_sock);
