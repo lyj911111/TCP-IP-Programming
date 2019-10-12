@@ -2,7 +2,7 @@
 
 	연결을 요청하는 소켓.
 	과정 : socket() -> connect() 
-
+	_
 */
 
 #include <stdio.h>
